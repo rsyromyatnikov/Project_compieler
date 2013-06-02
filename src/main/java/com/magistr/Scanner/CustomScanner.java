@@ -5,7 +5,7 @@ import java.io.FileReader;
 
 
 public class CustomScanner {	
-	private static final char ENDMARK = '\0';
+	
 	private int index = -1;
     private int lineIndex = 0;
     private int colIndex = -1;
@@ -38,7 +38,7 @@ public class CustomScanner {
 	    }
 	    colIndex++;
 	    if (index > sourceText.length()-1){
-	        customCharacter = new CustomCharacter(ENDMARK,index,lineIndex,colIndex); 	
+	        customCharacter = new CustomCharacter(CustomCharacter.ENDMARK,index,lineIndex,colIndex); 	
 	    } else {
 	        customCharacter = new CustomCharacter(sourceText.charAt(index),index,lineIndex,colIndex); 	
 	    }   

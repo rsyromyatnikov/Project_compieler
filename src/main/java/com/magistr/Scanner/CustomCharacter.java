@@ -2,7 +2,7 @@ package com.magistr.Scanner;
 
 public class CustomCharacter {
 	
-	private static final Character ENDMARK = '\0';
+	public static final Character ENDMARK = '\0';
 	private Character cargo;
 	private Integer index;
 	private Integer lineIndex;
