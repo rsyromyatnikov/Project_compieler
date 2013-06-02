@@ -1,26 +1,27 @@
 package com.magistr.Lexer;
 
+import com.magistr.Scanner.CustomCharacter;
+
 public class Token {
  
-	private Character startChar;
+	private String cargo;
 	private Integer lineIndex;
 	private Integer colIndex;
 	private String type;
 	
-	public Token(Character startChar,Integer lineIndex,Integer colIndex, String type){
-		this.startChar = startChar;
-		this.lineIndex = lineIndex;
-		this.colIndex = colIndex;
-		this.type = type;		
-	}
-	
-	
-	public Character getStartChar() {
-		return startChar;
+	public Token(CustomCharacter startChar){
+		this.cargo = Character.toString(startChar.getCargo());
+		this.lineIndex = startChar.getLineIndex();
+		this.colIndex = startChar.getColIndex();
+		this.type = null;			
+	}	
+
+	public String getCargo() {
+		return cargo;
 	}
 
-	public void setStartChar(Character startChar) {
-		this.startChar = startChar;
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
 	}
 
 	public Integer getLineIndex() {

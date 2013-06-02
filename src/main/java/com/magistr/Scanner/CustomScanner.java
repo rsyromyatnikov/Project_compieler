@@ -1,48 +1,50 @@
 package com.magistr.Scanner;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-
 
 public class CustomScanner {	
 	
-	private int index = -1;
-    private int lineIndex = 0;
-    private int colIndex = -1;
-    private String sourceText;
+	private String sourceText;
+	private int sourceIndex;
+    private int lineIndex;
+    private int colIndex;
+    private int lastIndex;
+    
 
-	public CustomScanner(String filePath) throws Exception{
-		BufferedReader br = new BufferedReader(new FileReader(filePath));	
-		try {
-	        StringBuilder sb = new StringBuilder();
-	        String line = br.readLine();
-	        while (line != null) {
-	            sb.append(line);
-	            sb.append("\n");
-	            line = br.readLine();
-	        }
-	        sourceText = sb.toString(); 
-		 } finally {
-		        br.close();
-		 }		
+	public CustomScanner(String sourceText) {
+		this.sourceText = sourceText;
+		this.lastIndex = sourceText.length()-1;
+		this.sourceIndex = -1;
+		this.lineIndex = 0;
+		this.colIndex = -1;
 	}
  
-	public CustomCharacter getChar()  {
+	public CustomCharacter get()  {
 		CustomCharacter customCharacter;        
-	    index++;	        	
-	    if (index>0){
-	        if (sourceText.charAt(index-1) == '\n'){
+		sourceIndex++;	        	
+	    if (sourceIndex>0){
+	        if (sourceText.charAt(sourceIndex-1) == '\n'){
 	        	lineIndex++;
 	        	colIndex = -1;
 	        }
 	    }
 	    colIndex++;
-	    if (index > sourceText.length()-1){
-	        customCharacter = new CustomCharacter(CustomCharacter.ENDMARK,index,lineIndex,colIndex); 	
+	    if (sourceIndex > lastIndex){
+	        customCharacter = new CustomCharacter(CustomCharacter.ENDMARK,sourceIndex,lineIndex,colIndex); 	
 	    } else {
-	        customCharacter = new CustomCharacter(sourceText.charAt(index),index,lineIndex,colIndex); 	
+	    	Character c = sourceText.charAt(sourceIndex);
+	        customCharacter = new CustomCharacter(c,sourceIndex,lineIndex,colIndex); 	
 	    }   
 		return customCharacter;
+	}
+	
+	public String lookahead(int offset) {
+		int index = sourceIndex + offset;
+		if (index > lastIndex){
+			return Character.toString(CustomCharacter.ENDMARK);
+		} else {
+			return Character.toString(sourceText.charAt(index));
+		}
+		
 	}
 	
 	
