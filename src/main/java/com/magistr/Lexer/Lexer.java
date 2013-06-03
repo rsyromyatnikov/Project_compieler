@@ -15,7 +15,7 @@ private CustomCharacter character;
 	}
 	
 	public Token get() {
-		while ( containsChar(c1,Symbols.WHITESPACE_CHARS) || c2 == "/*" ) {
+		while ( containsChar(c1,Symbols.WHITESPACE_CHARS) || ( c2.contains("/*") ) ) {
 			while (containsChar(c1,Symbols.WHITESPACE_CHARS)){
 				Token token = new Token(character);
 				token.setType(Symbols.WHITESPACE);
@@ -24,8 +24,9 @@ private CustomCharacter character;
 					token.setCargo(c2);
 					getChar();
 				}
+				//return token;
 			}
-			while (c2 == "/*" ){
+			while (c2.contains("/*") ){
 				Token token = new Token(character);
 				token.setType(Symbols.COMMENT);
 				token.setCargo(c2);
@@ -33,7 +34,7 @@ private CustomCharacter character;
 				getChar();
 				getChar();
 				
-				while (! (c2 == "*/") ){
+				while (! (c2.contains("*/")) ){
 					if (c1 == CustomCharacter.ENDMARK){
 						//token abort;
 					}
@@ -44,7 +45,10 @@ private CustomCharacter character;
 				
 				getChar();
 				getChar();
-			}			
+				
+				//return token;
+			}
+			
 		}
 		
 		Token token = new Token(character);

@@ -49,6 +49,6 @@ public class Token {
 	}
 
 	public String toString(){
-		return "";
+		return getLineIndex() + "    " + getColIndex() + "    " + getCargo() +"    " + getType();
 	}
 }
