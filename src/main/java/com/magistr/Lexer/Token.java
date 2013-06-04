@@ -51,4 +51,8 @@ public class Token {
 	public String toString(){
 		return getLineIndex() + "    " + getColIndex() + "    " + getCargo() +"    " + getType();
 	}
+	
+	public void abort(String msg) throws Exception{
+		throw new Exception(msg);
+	}
 }

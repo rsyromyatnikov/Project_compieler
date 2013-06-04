@@ -1,15 +1,35 @@
 package com.magistr.Parser;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 public class ParserDriver {
-     public static void main(String[] args){
-    	 System.out.println(mulString("1",1));
+     public static void main(String[] args) throws Exception{
+    	 String sourceText = getSourceText("D:\\text.txt");
+    	 Parser parser = new Parser(sourceText);
+    	 Node ast = parser.parse(false);
+    	 System.out.println("    ");
+    	 System.out.println("Here is th AST: ");
+    	 System.out.println("    ");
+    	 System.out.println(ast.toString());
+    	 
      }
      
-     private static String mulString(String s, int times){
-    	 String buf= "";
-    	 for (int i=0;i< times; i++){
-    		 buf+=s;
-    	 }   	 
-    	 return  buf;    	 
-     }
+     private static String getSourceText(String path) throws Exception{
+ 		String sourceText;
+ 		BufferedReader br = new BufferedReader(new FileReader(path));	
+ 		try {
+ 	        StringBuilder sb = new StringBuilder();
+ 	        String line = br.readLine();
+ 	        while (line != null) {
+ 	            sb.append(line);
+ 	            sb.append("\n");
+ 	            line = br.readLine();
+ 	        }
+ 	        sourceText = sb.toString(); 
+ 		 } finally {
+ 		        br.close();
+ 		 }
+ 		return sourceText;
+ 	}
 }
