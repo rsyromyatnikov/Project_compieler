@@ -3,6 +3,7 @@ package com.magistr.Parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.magistr.Lexer.Symbols;
 import com.magistr.Lexer.Token;
 
 public class Node {
@@ -51,10 +52,15 @@ public class Node {
 	
 	public String toString(){
 		String s = "";
-		if (getToken() == null){
+		Token token = getToken();
+		if (token == null){
 			s+= "ROOT\n";
-		} else {
-			s+= getToken().getCargo() + "\n";
+		} else if((token.getType() == Symbols.IDENTIFIER) 
+				|| (token.getType() == Symbols.NUMBER) 
+				|| (token.getType() == Symbols.STRING)) {
+			s+= "               " + token.getCargo() + "\n";
+		} else {			
+			s+= "    " +  token.getCargo() + "\n";
 		}
 		for (Node n:children){
 			s+= n.toString();
