@@ -6,11 +6,11 @@ public class Symbols {
 	public static String LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	
 	// a list of keywords
-	public static String KEYWORDS = "if then else elif endif while loop endloop print return exit";
+	public static String[] KEYWORDS = {"if", "then", "else", "elif", "endif", "while", "loop", "endloop", "print", "return", "exit"};
 	//a list of symbols that are one character long
-	public static String ONECHARACTERSYMBOLS = "= ( ) < > / * + - ! & . ;";
+	public static char[] ONECHARACTERSYMBOLS = {'=','(',')','<','>','/','*','+','-','!','&','.',';'};
 	//a list of symbols that are two characters long
-	public static String TWOCHARACTERSYMBOLS = "== <= >= <> != ++ ** -- += -= ||";
+	public static String[] TWOCHARACTERSYMBOLS = {"==", "<=",">=", "<>", "!=","++", "**", "--", "+=", "-=", "||"};
 	
 	public static String IDENTIFIER_STARTCHARS = LETTERS;
 	public static String IDENTIFIER_CHARS = LETTERS + DIGITS + "_";

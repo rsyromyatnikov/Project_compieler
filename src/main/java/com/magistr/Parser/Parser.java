@@ -1,6 +1,6 @@
 package com.magistr.Parser;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.magistr.Lexer.Lexer;
@@ -11,34 +11,56 @@ public class Parser {
 	
 	
 	private Lexer lx;
-	private Node ast;
 	private Token token = null;
-	private boolean verbose = false;
-	private int indent = 0;
-	private List<String> numberOperator = new ArrayList<String>();
+	private List<String> numberOperator = Arrays.asList("+", "-", "/", "*");
 	
 	public Parser(String sourceText) throws Exception{
 		lx = new Lexer(sourceText);
-		initNumberOperator();
+	}	
+	
+	public Node parse(){
+		getToken();		
+		return program();	
 	}
 	
-	public void getToken() {
-		if (verbose) {
-			System.out.println(mulString(" ",indent) 
-					+ "  ("+ token.toString() + ")");
-		}
+	private void getToken() {
 		token = lx.get();
 	}
 	
-	public void error(String msg){
-		try {
-			token.abort(msg);
-		} catch (Exception e) {
-			e.printStackTrace();
+	private Node program(){
+		Node node = new Node(null);
+		statement(node);
+		while (!found(Symbols.EOF)){
+			statement(node);
+		}
+		consume(Symbols.EOF);
+		return node;
+	}
+	
+	private void consume(String argTokenType){	
+		if (token.getType().equalsIgnoreCase(argTokenType)){
+			getToken();
+		}else {
+			error("Expected to find" + argTokenType + " but found "+ token.getType());
 		}
 	}
 	
-	public boolean foundOneOf(List<String> argTokenTypes){
+	private void statement(Node node){
+		if (found("print")){
+			printStatement(node);
+		}else {
+			assignmentStatement(node);
+		}
+	}
+	
+	private boolean found(String argTokenType){
+		if (token.getType().equalsIgnoreCase(argTokenType)){
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean foundOneOf(List<String> argTokenTypes){
 		for (String argTokenType:argTokenTypes){
 			if (token.getType().equalsIgnoreCase(argTokenType)){
 				return true;
@@ -47,50 +69,7 @@ public class Parser {
 		return false;
 	}
 	
-	public boolean found(String argTokenType){
-		if (token.getType().equalsIgnoreCase(argTokenType)){
-			return true;
-		}
-		return false;
-	}
-	
-	public void consume(String argTokenType){	
-		if (token.getType().equalsIgnoreCase(argTokenType)){
-			getToken();
-		}else {
-			error("Expected to find" + argTokenType + " but found "+ token.getType());
-		}
-	}
-	
-	public Node parse(boolean verbose){
-		getToken();
-		program();
-		//if (verbose){
-		///	System.out.println("Successful parse!");
-		//	System.out.println(mulString("~", 80));		
-		//}
-		return ast;	
-	}
-	
-	public void program(){
-		Node node = new Node(null);
-		statement(node);
-		while (!found(Symbols.EOF)){
-			statement(node);
-		}
-		consume(Symbols.EOF);
-		ast = node;
-	}
-	
-	public void statement(Node node){
-		if (found("print")){
-			printStatement(node);
-		}else {
-			assignmentStatement(node);
-		}
-	}
-	
-	public void expression(Node node){
+	private void expression(Node node){
 		if (found(Symbols.STRING)){
 			stringLiteral(node);
 			while (found("||")){
@@ -122,18 +101,18 @@ public class Parser {
 		}
 	}
 	
-	public void assignmentStatement(Node node){
+	private void assignmentStatement(Node node){
 		Node identifierNode = new Node(token);
 		consume(Symbols.IDENTIFIER);
 		Node operatorNode = new Node(token);
-		consume("= ");
+		consume("=");
 		node.addNode(operatorNode);
 		operatorNode.addNode(identifierNode);
 		expression(operatorNode);
 		consume(";");
 	}
 	
-	public void printStatement(Node node){
+	private void printStatement(Node node){
 		Node statementNode = new Node(token);
 		consume("print");		
 		node.addNode(statementNode);
@@ -141,7 +120,7 @@ public class Parser {
 		consume(";");
 	}
 	
-	public void stringExpression(Node node){
+	private void stringExpression(Node node){
 		if (found(Symbols.STRING)){
 			node.add(token);
 			getToken();
@@ -159,7 +138,7 @@ public class Parser {
 		}
 	}
 	
-	public void numberExpression(Node node){
+	private void numberExpression(Node node){
 		if (found(Symbols.NUMBER)){
 			numberLiteral(node);
 		} else {
@@ -173,31 +152,21 @@ public class Parser {
 		}
 	}
 	
-	public void stringLiteral(Node node){
+	private void stringLiteral(Node node){
 		node.add(token);
 		getToken();
 	}
 	
-	public void numberLiteral(Node node){
+	private void numberLiteral(Node node){
 		node.add(token);
 		getToken();
 	}	
 	
-	private static String mulString(String s, int times){
-   	 String buf= "";
-   	 for (int i=0;i< times; i++){
-   		 buf+=s;
-   	 }   	 
-   	 return  buf;    	 
-    }
-
-	private void initNumberOperator(){
-		numberOperator.add("+ ");
-		numberOperator.add("- ");
-		numberOperator.add("/");
-		numberOperator.add("* ");
-	}
-	
-	
-	
+	private void error(String msg){
+		try {
+			token.abort(msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
 }

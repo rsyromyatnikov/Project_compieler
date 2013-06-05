@@ -65,7 +65,7 @@ private CustomCharacter character;
 				token.setCargo(token.getCargo()+c1);
 				getChar();
 			}
-			if (Symbols.KEYWORDS.contains(token.getCargo())) {
+			if (contains(token.getCargo(), Symbols.KEYWORDS)) {
 				token.setType(token.getCargo());
 			}
 			return token;
@@ -98,7 +98,7 @@ private CustomCharacter character;
 			
 		}
 		
-		if (Symbols.TWOCHARACTERSYMBOLS.contains(c2)){
+		if (contains(c2, Symbols.TWOCHARACTERSYMBOLS)){
 			token.setCargo(c2);
 			token.setType(token.getCargo());
 			getChar();
@@ -127,5 +127,23 @@ private CustomCharacter character;
 	        return false;
 	    else
 	        return s.charAt(0) == search || containsChar(search, s.substring(1));
+	}
+	
+	public boolean containsChar(char search, char[] s) {
+	    for (char item:s){
+	    	if (item == search){
+	    		return true;
+	    	}
+	    }
+	    return false;
+	}
+	
+	public boolean contains(String search, String[] s) {
+	    for (String item:s){
+	    	if (item.equalsIgnoreCase(search)){
+	    		return true;
+	    	}
+	    }
+	    return false;
 	}
 }

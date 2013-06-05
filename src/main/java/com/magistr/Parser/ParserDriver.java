@@ -7,7 +7,7 @@ public class ParserDriver {
      public static void main(String[] args) throws Exception{
     	 String sourceText = getSourceText("D:\\text.txt");
     	 Parser parser = new Parser(sourceText);
-    	 Node ast = parser.parse(false);
+    	 Node ast = parser.parse();
     	 System.out.println("    ");
     	 System.out.println("Here is th AST: ");
     	 System.out.println("    ");
