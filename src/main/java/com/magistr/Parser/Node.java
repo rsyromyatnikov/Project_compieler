@@ -50,7 +50,7 @@ public class Node {
 	}
 	
 	public String toString(){
-		String s = "     " + getLevel();
+		String s = "";
 		if (getToken() == null){
 			s+= "ROOT\n";
 		} else {
@@ -61,4 +61,7 @@ public class Node {
 		}
 		return s;
 	}
+	
+	
+	
 }

@@ -30,23 +30,6 @@ public class Parser {
 		token = lx.get();
 	}
 	
-	public void push(String s){
-		indent+=1;
-		if (verbose){
-			System.out.println(mulString(" ",indent) + " " +s);
-		}
-	}
-	
-	public void pop(String s){
-		if (verbose){
-			//System.out.println(mulString(" ",indent) + " " +s+ ".end");
-		}
-		indent -=1;
-	}
-	
-	// track0 method 
-	// track method 
-	
 	public void error(String msg){
 		try {
 			token.abort(msg);
@@ -57,7 +40,7 @@ public class Parser {
 	
 	public boolean foundOneOf(List<String> argTokenTypes){
 		for (String argTokenType:argTokenTypes){
-			if (token.getType() == argTokenType){
+			if (token.getType().equalsIgnoreCase(argTokenType)){
 				return true;
 			}
 		}
@@ -65,14 +48,14 @@ public class Parser {
 	}
 	
 	public boolean found(String argTokenType){
-		if (token.getType() == argTokenType){
+		if (token.getType().equalsIgnoreCase(argTokenType)){
 			return true;
 		}
 		return false;
 	}
 	
-	public void consume(String argTokenType){
-		if (token.getType() == argTokenType){
+	public void consume(String argTokenType){	
+		if (token.getType().equalsIgnoreCase(argTokenType)){
 			getToken();
 		}else {
 			error("Expected to find" + argTokenType + " but found "+ token.getType());
@@ -82,11 +65,10 @@ public class Parser {
 	public Node parse(boolean verbose){
 		getToken();
 		program();
-		if (verbose){
-			System.out.println(mulString("~", 80));
-			System.out.println("Successful parse!");
-			System.out.println(mulString("~", 80));		
-		}
+		//if (verbose){
+		///	System.out.println("Successful parse!");
+		//	System.out.println(mulString("~", 80));		
+		//}
 		return ast;	
 	}
 	
@@ -144,7 +126,7 @@ public class Parser {
 		Node identifierNode = new Node(token);
 		consume(Symbols.IDENTIFIER);
 		Node operatorNode = new Node(token);
-		consume("=");
+		consume("= ");
 		node.addNode(operatorNode);
 		operatorNode.addNode(identifierNode);
 		expression(operatorNode);
@@ -210,10 +192,10 @@ public class Parser {
     }
 
 	private void initNumberOperator(){
-		numberOperator.add("+");
-		numberOperator.add("-");
+		numberOperator.add("+ ");
+		numberOperator.add("- ");
 		numberOperator.add("/");
-		numberOperator.add("*");
+		numberOperator.add("* ");
 	}
 	
 	
